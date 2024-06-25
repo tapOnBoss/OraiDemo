@@ -1,4 +1,3 @@
-Oru prognozes// Ziniu patikrinimo darbas.
 Kad programa veiktu Paimama AXIOS biblioteka (ja reikia isirasyti konsoleje).
 Oru API yra puslapyje openweathermap.org (API reikia nurodyti funkcijoje).
 Programa igauna pavidala is Bulma.io .
