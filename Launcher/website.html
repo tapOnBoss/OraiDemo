@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orų Prognozės</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <section class="section">
+        <div class="container">
+            <h1 class="title">Orų Prognozės</h1>
+            <button class="button is-primary" id="addForecastBtn">Pridėti Orų Prognozę</button>
+            <table class="table is-fullwidth is-striped" id="forecastTable">
+                <thead>
+                    <tr>
+                        <th>Miesto Pavadinimas</th>
+                        <th>Šalis</th>
+                        <th>Temperatūra</th>
+                        <th>Drėgmė</th>
+                        <th>Vėjo Greitis</th>
+                        <th>Slėgis</th>
+                        <th>Veiksmai</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <div class="modal" id="forecastModal">
+        <div class="modal-background"></div>
+        <div class="modal-content">
+            <div class="box">
+                <label class="label">Miesto Pavadinimas</label>
+                <input class="input" type="text" id="cityName">
+                <label class="label">Pašto Kodas</label>
+                <input class="input" type="text" id="postalCode">
+                <label class="label">Koordinatės</label>
+                <input class="input" type="text" id="coordinates">
+                <button class="button is-primary" id="saveForecastBtn">Išsaugoti</button>
+            </div>
+        </div>
+        <button class="modal-close is-large" aria-label="close"></button>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
