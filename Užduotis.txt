@@ -1,0 +1,54 @@
+Užduoties Reikalavimai:
+Naudoti Axios biblioteką:
+Įdiegta ir naudojama axios.
+Naudoti OpenWeatherMap API:
+Naudojamas OpenWeatherMap API ir nurodomas API raktas funkcijoje.
+Naudoti Bulma.io stilių:
+Bulma.io CSS failas įtrauktas į HTML failą.
+Orų rodymas:
+Rodomi visi orų duomenys.
+Turėti paieškos laukelį, mygtuką pridėti orų prognozę ir mygtuką pašalinti orų prognozę:
+Paieškos laukelis yra modale.
+Mygtukas pridėti orų prognozę yra puslapio viršuje.
+Mygtukas pašalinti orų prognozę yra prie kiekvieno įrašo.
+Pradžioje puslapis turi būti tuščias:
+Jei nėra pridėtų prognozių, lentelė yra tuščia.
+Jei buvo pridėtas prognozės įrašas, kitą kartą atidarant jis turi būti rodomas:
+Naudojamas Local Storage, kad išsaugotų pridėtas prognozes ir parodytų jas vėl atidarius puslapį.
+Visos prognozės turi būti susietos (galbūt reiškia, kad jos turi būti susietos su konkrečiu vartotoju arba laikomos kartu):
+Naudojama Local Storage, kad būtų saugomos visos prognozės vienoje vietoje.
+Puslapyje turi tilpti 10 įrašų:
+Maksimalus įrašų skaičius nėra aiškiai apribotas, reikia pridėti šią funkciją.
+Pridėti orų prognozę mygtukas turi būti viršuje puslapio:
+Atitinka.
+Paspaudus turi iššokti lentelė:
+Atitinka, naudojamas modalis.
+Lentelėje turi būti paieškos laukelis su nurodytais duomenimis:
+Atitinka, tačiau reikia pridėti patikrinimą visiems trims paieškos būdams (miesto pavadinimas, pašto kodas, koordinatės).
+Pridėjus prognozę, atnaujinti orus neperkraunant viso puslapio:
+Atitinka, naudojama dinaminė lentelės atnaujinimo funkcija.
+Prie kiekvienos prognozės turi būti mygtukas arba ikona, leidžianti pašalinti prognozę:
+Atitinka.
+Orų lentelės informacija:
+Miesto pavadinimas, šalis, šalių inicialai, temperatūra, drėgmė, vėjo greitis, slėgis, saulėtekio ir saulėlydžio laikas.
+Orų simboliai:
+Pridėta naudojant Weather Icons.
+Projekto talpinimas Github:
+Šį žingsnį reikia atlikti po kodavimo.
+Dokumentacija kaip pradėti:
+Pridėkite README failą su instrukcijomis.
+Paleisti per HTTP-serverį:
+Reikia instrukcijų, kaip paleisti per HTTP-serverį.
+Error handling:
+Naudojama try-catch struktūra klaidoms tvarkyti.
+Papildymai ir Pataisymai:
+Maksimalus 10 įrašų ribojimas:
+Pridėkite funkciją, kuri neleistų pridėti daugiau nei 10 įrašų.
+Patikrinimas visiems paieškos būdams:
+Užtikrinkite, kad visos paieškos parinktys (miesto pavadinimas, pašto kodas, koordinatės) būtų veiksmingos.
+Projekto talpinimas ir dokumentacija:
+Įtraukite projektą į GitHub ir sukurkite README failą su pradžios instrukcijomis.
+Error handling:
+Pabandykite geriau apdoroti klaidas ir informuoti vartotoją apie klaidas, pvz., neteisingai įvestus duomenis.
+
+

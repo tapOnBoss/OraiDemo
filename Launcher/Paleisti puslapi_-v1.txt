@@ -1,0 +1,24 @@
+Galima paleisti:
+{
+    1 per vscode rightclick+open with edge> open browser.
+    2 atsidarius aplanke double click ` website.html `.
+}
+3.terminalo komandos neveikia tokios kaip http server ar npm start
+{ 
+    notes@DESKTOP-SCH6TCU MINGW64 ~/Documents/GitHub/OraiDemo (main)
+    $ cd Launcher
+    notes@DESKTOP-SCH6TCU MINGW64 ~/Documents/GitHub/OraiDemo/Launcher (main) 
+    $ npm start
+    npm error Missing script: "start"
+    npm error
+    npm error Did you mean one of these?
+    npm error   npm star # Mark your favorite packages
+    npm error   npm stars # View packages marked as favorites
+    npm error
+    npm error To see a list of scripts, run:
+    npm error   npm run
+    npm error A complete log of this run can be found in: C:\Users\notes\AppData\Local\npm-cache\_logs\2024-06-27T12_43_31_987Z-debug-0.log
+    notes@DESKTOP-SCH6TCU MINGW64 ~/Documents/GitHub/OraiDemo/Launcher (main)
+    $ http server
+    bash: http: command not found
+}

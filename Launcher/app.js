@@ -32,6 +32,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (query) {
             try {
+                const forecasts = getForecasts();
+                if (forecasts.length >= 10) {
+                    alert('Negalite pridėti daugiau nei 10 įrašų.');
+                    return;
+                }
+
                 const response = await axios.get(`https://api.openweathermap.org/data/2.5/weather?${query}&appid=${apiKey}&units=metric`);
                 const data = response.data;
 
@@ -42,6 +48,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     humidity: data.main.humidity,
                     windSpeed: data.wind.speed,
                     pressure: data.main.pressure,
+                    sunrise: new Date(data.sys.sunrise * 1000).toLocaleTimeString(),
+                    sunset: new Date(data.sys.sunset * 1000).toLocaleTimeString(),
+                    weatherIcon: getWeatherIcon(data.weather[0].main),
                     id: Date.now()
                 };
 
@@ -49,10 +58,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 addForecastToTable(forecast);
                 forecastModal.classList.remove('is-active');
             } catch (error) {
+                alert('Įvyko klaida gaunant orų duomenis. Patikrinkite savo įvestus duomenis.');
                 console.error('Error fetching weather data:', error);
             }
         }
     });
+
+    function getWeatherIcon(condition) {
+        switch (condition.toLowerCase()) {
+            case 'clear':
+                return 'img/sunny.png';
+            case 'rain':
+                return 'img/rainy.png';
+            case 'clouds':
+                return 'img/cloudy.png';
+            default:
+                return 'img/cloudy.png';
+        }
+    }
 
     function saveForecast(forecast) {
         const forecasts = getForecasts();
@@ -66,6 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function addForecastToTable(forecast) {
         const row = document.createElement('tr');
+        row.classList.add('fade-in');
 
         row.innerHTML = `
             <td>${forecast.cityName}</td>
@@ -74,6 +98,9 @@ document.addEventListener('DOMContentLoaded', () => {
             <td>${forecast.humidity}%</td>
             <td>${forecast.windSpeed} m/s</td>
             <td>${forecast.pressure} hPa</td>
+            <td>${forecast.sunrise}</td>
+            <td>${forecast.sunset}</td>
+            <td><img src="${forecast.weatherIcon}" class="weather-icon"></td>
             <td><button class="button is-danger is-small" onclick="removeForecast(${forecast.id})">Pašalinti</button></td>
         `;
 
