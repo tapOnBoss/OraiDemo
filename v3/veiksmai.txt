@@ -1,0 +1,309 @@
+Projekto struktūra
+{
+  npx create-react-app weather-forecast
+  cd weather-forecast
+  npm install axios
+  
+  Įtraukite Bulma CSS:
+  Įtraukite bulma paketą:
+  npm install bulma
+  Įtraukite Bulma CSS į src/index.js:
+  Javascript
+  import 'bulma/css/bulma.min.css';
+  import './index.css';
+  import React from 'react';
+  import ReactDOM from 'react-dom';
+  import App from './App';
+  import reportWebVitals from './reportWebVitals';
+  ReactDOM.render(
+    <React.StrictMode>
+    <App />
+    </React.StrictMode>,
+    document.getElementById('root')
+    );
+    reportWebVitals();
+
+
+Paveikslėliai
+Įkelkite paveikslėlius src/img kataloge:
+sunny.png
+cloudy.png
+rainy.png
+Sukurkite komponentus
+Sukursime keletą komponentų: App, WeatherTable, WeatherForm, ir WeatherRow.
+App.js
+javascript
+Copy code
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import 'bulma/css/bulma.min.css';
+import './App.css';
+import WeatherTable from './WeatherTable';
+import WeatherForm from './WeatherForm';
+
+const apiKey = 'YOUR_API_KEY'; // Pakeiskite su savo OpenWeatherMap API raktu
+
+const App = () => {
+  const [forecasts, setForecasts] = useState([]);
+
+  useEffect(() => {
+    const savedForecasts = JSON.parse(localStorage.getItem('forecasts')) || [];
+    setForecasts(savedForecasts);
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('forecasts', JSON.stringify(forecasts));
+  }, [forecasts]);
+
+  const addForecast = async (query) => {
+    try {
+      const response = await axios.get(`https://api.openweathermap.org/data/2.5/weather?${query}&appid=${apiKey}&units=metric`);
+      const data = response.data;
+
+      const forecast = {
+        cityName: data.name,
+        country: data.sys.country,
+        temperature: data.main.temp,
+        humidity: data.main.humidity,
+        windSpeed: data.wind.speed,
+        pressure: data.main.pressure,
+        sunrise: new Date(data.sys.sunrise * 1000).toLocaleTimeString(),
+        sunset: new Date(data.sys.sunset * 1000).toLocaleTimeString(),
+        weatherIcon: getWeatherIcon(data.weather[0].main),
+        id: Date.now()
+      };
+
+      setForecasts([...forecasts, forecast]);
+    } catch (error) {
+      alert('Įvyko klaida gaunant orų duomenis. Patikrinkite savo įvestus duomenis.');
+      console.error('Error fetching weather data:', error);
+    }
+  };
+
+  const removeForecast = (id) => {
+    const updatedForecasts = forecasts.filter(forecast => forecast.id !== id);
+    setForecasts(updatedForecasts);
+  };
+
+  const getWeatherIcon = (condition) => {
+    switch (condition.toLowerCase()) {
+      case 'clear':
+        return '/img/sunny.png';
+      case 'rain':
+        return '/img/rainy.png';
+      case 'clouds':
+        return '/img/cloudy.png';
+      default:
+        return '/img/cloudy.png';
+    }
+  };
+
+  return (
+    <div className="container">
+      <section className="section">
+        <h1 className="title">Orų Prognozės</h1>
+        <WeatherForm addForecast={addForecast} />
+        <WeatherTable forecasts={forecasts} removeForecast={removeForecast} />
+      </section>
+    </div>
+  );
+};
+
+export default App;
+
+WeatherForm.js
+javascript
+Copy code
+import React, { useState } from 'react';
+
+const WeatherForm = ({ addForecast }) => {
+  const [cityName, setCityName] = useState('');
+  const [postalCode, setPostalCode] = useState('');
+  const [coordinates, setCoordinates] = useState('');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    let query = '';
+    if (cityName) {
+      query = `q=${cityName}`;
+    } else if (postalCode) {
+      query = `zip=${postalCode}`;
+    } else if (coordinates) {
+      const [lat, lon] = coordinates.split(',');
+      query = `lat=${lat}&lon=${lon}`;
+    }
+
+    if (query) {
+      addForecast(query);
+    }
+  };
+
+  return (
+    <div className="box">
+      <form onSubmit={handleSubmit}>
+        <div className="field">
+          <label className="label">Miesto Pavadinimas</label>
+          <div className="control">
+            <input className="input" type="text" value={cityName} onChange={(e) => setCityName(e.target.value)} placeholder="Pvz., Vilnius" />
+          </div>
+        </div>
+
+        <div className="field">
+          <label className="label">Pašto Kodas</label>
+          <div className="control">
+            <input className="input" type="text" value={postalCode} onChange={(e) => setPostalCode(e.target.value)} placeholder="Pvz., 01100" />
+          </div>
+        </div>
+
+        <div className="field">
+          <label className="label">Koordinatės (platuma, ilguma)</label>
+          <div className="control">
+            <input className="input" type="text" value={coordinates} onChange={(e) => setCoordinates(e.target.value)} placeholder="Pvz., 54.6872, 25.2797" />
+          </div>
+        </div>
+
+        <div className="control">
+          <button className="button is-primary" type="submit">Pridėti Orų Prognozę</button>
+        </div>
+      </form>
+    </div>
+  );
+};
+
+export default WeatherForm;
+
+WeatherTable.js
+javascript
+Copy code
+import React from 'react';
+import WeatherRow from './WeatherRow';
+
+const WeatherTable = ({ forecasts, removeForecast }) => {
+  return (
+    <table className="table is-fullwidth is-striped">
+      <thead>
+        <tr>
+          <th>Miesto Pavadinimas</th>
+          <th>Šalis</th>
+          <th>Temperatūra</th>
+          <th>Drėgmė</th>
+          <th>Vėjo Greitis</th>
+          <th>Slėgis</th>
+          <th>Saulėtekis</th>
+          <th>Saulėlydis</th>
+          <th>Orų Sąlygos</th>
+          <th>Veiksmai</th>
+        </tr>
+      </thead>
+      <tbody>
+        {forecasts.map(forecast => (
+          <WeatherRow key={forecast.id} forecast={forecast} removeForecast={removeForecast} />
+        ))}
+      </tbody>
+    </table>
+  );
+};
+
+export default WeatherTable;
+
+WeatherRow.js
+javascript
+Copy code
+import React from 'react';
+
+const WeatherRow = ({ forecast, removeForecast }) => {
+  return (
+    <tr className="fade-in">
+      <td>{forecast.cityName}</td>
+      <td>{forecast.country}</td>
+      <td>{forecast.temperature}°C</td>
+      <td>{forecast.humidity}%</td>
+      <td>{forecast.windSpeed} m/s</td>
+      <td>{forecast.pressure} hPa</td>
+      <td>{forecast.sunrise}</td>
+      <td>{forecast.sunset}</td>
+      <td><img src={forecast.weatherIcon} className="weather-icon" alt="Weather Icon" /></td>
+      <td>
+        <button className="button is-danger is-small" onClick={() => removeForecast(forecast.id)}>Pašalinti</button>
+      </td>
+    </tr>
+  );
+};
+
+export default WeatherRow;
+
+Stiliaus ir animacijų pritaikymas
+Įtraukite papildomus stiliaus ir animacijų efektus į App.css.
+App.css
+css
+Copy code
+.fade-in {
+    animation: fadeIn 2s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.weather-icon {
+    width: 50px;
+    height: 50px;
+}
+
+Projekto katalogo struktūra
+css
+Copy code
+/weather-forecast
+├── public
+│   ├── img
+│   │   ├── sunny.png
+│   │   ├── rainy.png
+│   │   ├── cloudy.png
+│   └── index.html
+├── src
+│   ├── components
+│   │   ├── WeatherForm.js
+│   │   ├── WeatherRow.js
+│   │   ├── WeatherTable.js
+│   ├── App.css
+│   ├── App.js
+│   ├── index.js
+│   └── index.css
+├── package.json
+└── README.md
+
+README failo pavyzdys:
+markdown
+Copy code
+# Orų Prognozės
+
+## Kaip Paleisti Projektą
+
+1. **Įdiegti priklausomybes**:
+   ```bash
+   npm install
+
+Paleisti React programą:
+bash
+Copy code
+npm start
+
+
+Atidaryti naršyklėje:
+Atidarykite http://localhost:3000.
+Priklausomybės
+React
+Axios
+Bulma
+Instrukcijos
+Pridėkite savo OpenWeatherMap API raktą į App.js failą.
+Pridėkite orų prognozes, naudodami miesto pavadinimą, pašto kodą arba koordinates.
+Pridėjus prognozę, ji bus išsaugota ir parodyta vėl atidarius puslapį.
+Error Handling
+Klaidų tvarkymas atliekamas naudojant try-catch bloką.
+Jei įvyksta klaida, vartotojas bus informuotas per alertą.
+
+}
+
